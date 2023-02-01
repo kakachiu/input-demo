@@ -34,6 +34,7 @@
       document
         .getElementById("add-pic-btn")
         .addEventListener("change", function () {
+          // 由於還要加拍照的，所以可以監聽長度如果大於9張就把選擇檔案按鈕灰底
           // 限制選擇張數
           var fileCount = document.getElementById("add-pic-btn").files.length;
           console.log(fileCount);

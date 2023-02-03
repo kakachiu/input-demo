@@ -8,114 +8,112 @@
   </head>
 
   <style>
-    .group-coms-pic {
-      width: 561px;
+    .picContent {
+      width: 400px;
       display: flex;
     }
-    /* img {
+    img {
       width: 100%;
-    } */
+    }
   </style>
 
   <body>
     <input
       type="file"
-      class="up-file"
-      id="add-pic-btn"
+      class="selectFile"
       accept="image/*"
       multiple="multiple"
     />
-    <div class="group-coms-pic" id="groupTu"></div>
+    <div class="picContent" id="groupTu"></div>
+
     <script type="text/javascript">
-      const upFile = document.querySelector(".up-file");
+      const selectFile = document.querySelector(".selectFile");
 
       // 上傳多個文件方法
-      // input file 已增加 multiple 屬性，按住 ctrl 可多選
-      document
-        .getElementById("add-pic-btn")
-        .addEventListener("change", function () {
-          // 由於還要加拍照的，所以可以監聽長度如果大於9張就把選擇檔案按鈕灰底
-          // 限制選擇張數
-          var fileCount = document.getElementById("add-pic-btn").files.length;
-          console.log(fileCount);
-          if (fileCount > 9) {
-            alert(
-              "最多僅支援9張相片，你選擇了" + fileCount + "張，請重新選擇！"
-            );
-            upFile.value = "";
-            return false;
+      // input file 增加 multiple 屬性，按住 ctrl 可多選
+      selectFile.addEventListener("change", function () {
+        // 由於還要加拍照的，所以可以監聽長度如果大於9張就把選擇檔案按鈕灰底
+        // 限制選擇張數
+        var fileLength = document.querySelector("selectFile").files.length;
+        console.log(fileLength);
+        if (fileLength > 9) {
+          alert(
+            "最多僅支援9張相片，你選擇了" + fileLength + "張，請重新選擇！"
+          );
+          selectFile.value = "";
+          return false;
+        }
+
+        var obj = this,
+          length = obj.files.length,
+          arrTitle = []; // 存標題名
+        _html = "";
+
+        for (var i = 0; i < length; i++) {
+          var reader = new FileReader();
+          if (!reader) {
+            console.log("您的瀏覽器不支援！請使用 chrome 瀏覽器");
+            return;
           }
+          // 儲存上傳的多張圖片名稱
+          arrTitle.push(obj.files[i].name);
 
-          var obj = this,
-            length = obj.files.length,
-            arrTitle = []; // 存標題名
-          _html = "";
+          reader.error = function (e) {
+            console.log("讀取異常");
+          };
 
-          for (var i = 0; i < length; i++) {
-            var reader = new FileReader();
-            if (!reader) {
-              console.log("您的瀏覽器不支援！請使用 chrome 瀏覽器");
-              return;
-            }
-            // 儲存上傳的多張圖片名稱
-            arrTitle.push(obj.files[i].name);
+          // iffi语法
+          (function (i) {
+            //讀取成功
+            reader.onload = function (e) {
+              // console.log(e)
+              var _src = e.target.result;
 
-            reader.error = function (e) {
-              console.log("讀取異常");
-            };
+              //節點
+              var divItem = document.createElement("div");
+              divItem.setAttribute("class", "item");
+              var divPic = document.createElement("div");
+              divPic.setAttribute("class", "pic-box");
+              var img = document.createElement("img");
+              img.setAttribute("class", "img");
+              img.setAttribute("src", _src);
+              var divTk = document.createElement("div");
+              divTk.setAttribute("class", "tk");
+              var spanDel = document.createElement("span");
+              spanDel.setAttribute("class", "del");
+              spanDel.setAttribute("title", arrTitle[i]);
+              spanDel.innerText = "x";
 
-            // iffi语法
-            (function (i) {
-              //讀取成功
-              reader.onload = function (e) {
-                // console.log(e)
-                var _src = e.target.result;
+              divTk.innerHTML = arrTitle[i];
 
-                //節點
-                var divItem = document.createElement("div");
-                divItem.setAttribute("class", "item");
-                var divPic = document.createElement("div");
-                divPic.setAttribute("class", "pic-box");
-                var img = document.createElement("img");
-                img.setAttribute("class", "img");
-                img.setAttribute("src", _src);
-                var divTk = document.createElement("div");
-                divTk.setAttribute("class", "tk");
-                var spanDel = document.createElement("span");
-                spanDel.setAttribute("class", "del");
-                spanDel.setAttribute("title", arrTitle[i]);
-                spanDel.innerText = "x";
+              divItem.appendChild(divPic);
+              divPic.appendChild(img);
+              divItem.appendChild(divTk);
+              divItem.appendChild(spanDel);
 
-                divTk.innerHTML = arrTitle[i];
+              // 增加節點結構
+              var groupTu = document.getElementById("groupTu");
+              groupTu.insertBefore(divItem, groupTu.firstChild);
 
-                divItem.appendChild(divPic);
-                divPic.appendChild(img);
-                divItem.appendChild(divTk);
-                divItem.appendChild(spanDel);
-
-                // 增加節點結構
-                var groupTu = document.getElementById("groupTu");
-                groupTu.insertBefore(divItem, groupTu.firstChild);
-
-                // 刪除節點
-                spanDel.onclick = function () {
-                  removeItem(this);
-                  return false;
-                };
-
-                upFile.value = "";
+              // 刪除節點
+              spanDel.onclick = function () {
+                removeItem(this);
+                return false;
               };
-            })(i);
 
-            reader.οnlοadstart = function () {};
-            reader.οnprοgress = function (e) {
-              if (e.lengthComputable) {
-                console.log("正在讀取文件");
-              }
+              selectFile.value = "";
             };
-            reader.readAsDataURL(obj.files[i]);
-          }
-        });
+          })(i);
+
+          reader.οnlοadstart = function () {};
+          reader.οnprοgress = function (e) {
+            if (e.lengthComputable) {
+              console.log("正在讀取文件");
+            }
+          };
+          reader.readAsDataURL(obj.files[i]);
+        }
+      });
 
       // 刪除圖片
       function removeItem(delNode) {

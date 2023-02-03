@@ -75,24 +75,23 @@
       // 上傳多個文件方法
       // input file 增加 multiple 屬性，按住 ctrl 可多選
       selectFile.addEventListener("change", function () {
-        // 由於還要加拍照的，所以可以監聽長度如果大於9張就把選擇檔案按鈕灰底
         // 限制選擇張數
         let fileLength = document.querySelector(".selectFile").files.length;
-        console.log("照片張數", fileLength);
+        console.log("圖片張數", fileLength);
         if (fileLength > 9) {
-          alert(`最多選擇 9 張照片，目前已選 ${fileLength} 張，請重新選擇！`);
+          alert(`最多選擇 9 張圖片，目前已選 ${fileLength} 張，請重新選擇！`);
           selectFile.value = "";
           return false;
         }
 
-        // 監聽總數
+        // 監聽 li 總數
         const picContentLen =
           document.querySelectorAll(".picContent li").length;
         console.log("picContentLen", picContentLen);
         console.log("總數", fileLength + picContentLen);
         const total = fileLength + picContentLen;
         if (total > 9) {
-          alert(`目前已選 ${fileLength} 張，總數僅能 9 張照片`);
+          alert(`目前已選 ${fileLength} 張，總數僅能 9 張圖片`);
           selectFile.value = "";
           return false;
         } else if (total == 9) {
@@ -106,7 +105,7 @@
         for (let i = 0; i < length; i++) {
           let reader = new FileReader();
           if (!reader) {
-            console.log("您的瀏覽器不支援！請使用 chrome 瀏覽器");
+            console.log("您的瀏覽器不支援，請使用 chrome 瀏覽器");
             return;
           }
           // 儲存上傳的多張圖片名稱
@@ -123,7 +122,7 @@
               // console.log(e)
               let picSrc = e.target.result;
 
-              // 節點
+              // 創建節點
               const li = document.createElement("li");
               li.setAttribute("class", "item");
 
@@ -173,10 +172,10 @@
         }
       });
 
+      // 刪除圖片
       const picContentLen = document.querySelectorAll(".picContent li").length;
       console.log("picContentLen", picContentLen);
 
-      // 刪除圖片
       function removeItem(delNode) {
         let itemNode = delNode.parentNode,
           title = delNode.getAttribute("title");

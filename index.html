@@ -16,12 +16,33 @@
       padding-left: 0px;
     }
     .picContent li {
-      width: calc(100% / 2 - 10px);
+      width: calc(100% / 2 - 5px);
       margin-right: 10px;
       margin-bottom: 10px;
+      position: relative;
+    }
+    .picContent li:nth-child(2n + 2) {
+      margin-right: 0;
+    }
+    .picOuter {
+      border-radius: 5px;
+      overflow: hidden;
     }
     img {
       width: 100%;
+    }
+    .delBtn {
+      position: absolute;
+      right: 6px;
+      top: 6px;
+      background-color: rgba(grey, 0.5);
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
     }
   </style>
 
@@ -45,9 +66,7 @@
         let fileLength = document.querySelector(".selectFile").files.length;
         console.log(fileLength);
         if (fileLength > 9) {
-          alert(
-            "最多選擇 9 張照片，目前已選" + fileLength + "張，請重新選擇！"
-          );
+          alert(`最多選擇 9 張照片，目前已選 ${fileLength} 張，請重新選擇！`);
           selectFile.value = "";
           return false;
         }

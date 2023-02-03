@@ -25,7 +25,7 @@
       accept="image/*"
       multiple="multiple"
     />
-    <div class="picContent"></div>
+    <ul class="picContent"></ul>
 
     <script type="text/javascript">
       const selectFile = document.querySelector(".selectFile");
@@ -67,36 +67,40 @@
             // 讀取成功
             reader.onload = function (e) {
               // console.log(e)
-              let _src = e.target.result;
+              let picSrc = e.target.result;
 
               // 節點
-              const divItem = document.createElement("div");
-              divItem.setAttribute("class", "item");
-              const divPic = document.createElement("div");
-              divPic.setAttribute("class", "pic-box");
+              const li = document.createElement("li");
+              li.setAttribute("class", "item");
+
+              const picOuter = document.createElement("div");
+              picOuter.setAttribute("class", "picOuter");
+
               const img = document.createElement("img");
               img.setAttribute("class", "img");
-              img.setAttribute("src", _src);
-              const divTk = document.createElement("div");
-              divTk.setAttribute("class", "tk");
-              const spanDel = document.createElement("span");
-              spanDel.setAttribute("class", "del");
-              spanDel.setAttribute("title", arrTitle[i]);
-              spanDel.innerText = "x";
+              img.setAttribute("src", picSrc);
 
-              divTk.innerHTML = arrTitle[i];
+              const picName = document.createElement("div");
+              picName.setAttribute("class", "picName");
 
-              divItem.appendChild(divPic);
-              divPic.appendChild(img);
-              divItem.appendChild(divTk);
-              divItem.appendChild(spanDel);
+              const delBtn = document.createElement("span");
+              delBtn.setAttribute("class", "delBtn");
+              delBtn.setAttribute("title", arrTitle[i]);
+              delBtn.innerText = "x";
+
+              picName.innerHTML = arrTitle[i];
+
+              li.appendChild(picOuter);
+              picOuter.appendChild(img);
+              li.appendChild(picName);
+              li.appendChild(delBtn);
 
               // 增加節點結構
               const picContent = document.querySelector(".picContent");
-              picContent.insertBefore(divItem, picContent.firstChild);
+              picContent.insertBefore(li, picContent.firstChild);
 
               // 刪除節點
-              spanDel.onclick = function () {
+              delBtn.onclick = function () {
                 removeItem(this);
                 return false;
               };
@@ -119,7 +123,7 @@
       function removeItem(delNode) {
         let itemNode = delNode.parentNode,
           title = delNode.getAttribute("title");
-        let flag = confirm("確認要刪除：" + title + "圖片？");
+        let flag = confirm(`確認要刪除：${title} 圖片？`);
         if (flag) {
           itemNode.parentNode.removeChild(itemNode);
           console.log("刪除成功");

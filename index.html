@@ -11,6 +11,7 @@
     .picContent {
       width: 400px;
       display: flex;
+      flex-wrap: wrap;
     }
     img {
       width: 100%;
@@ -38,7 +39,7 @@
         console.log(fileLength);
         if (fileLength > 9) {
           alert(
-            "最多僅支援9張相片，你選擇了" + fileLength + "張，請重新選擇！"
+            "最多選擇 9 張照片，目前已選" + fileLength + "張，請重新選擇！"
           );
           selectFile.value = "";
           return false;
@@ -47,7 +48,6 @@
         let obj = this,
           length = obj.files.length,
           arrTitle = []; // 存標題
-        _html = "";
 
         for (let i = 0; i < length; i++) {
           let reader = new FileReader();

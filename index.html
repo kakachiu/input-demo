@@ -57,7 +57,17 @@
       accept="image/*"
       multiple="multiple"
     />
-    <ul class="picContent"></ul>
+    <ul class="picContent">
+      <!-- <li>1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+      <li>5</li>
+      <li>6</li>
+      <li>7</li>
+      <li>8</li>
+      <li>9</li> -->
+    </ul>
 
     <script type="text/javascript">
       const selectFile = document.querySelector(".selectFile");
@@ -68,11 +78,25 @@
         // 由於還要加拍照的，所以可以監聽長度如果大於9張就把選擇檔案按鈕灰底
         // 限制選擇張數
         let fileLength = document.querySelector(".selectFile").files.length;
-        console.log(fileLength);
+        console.log("照片張數", fileLength);
         if (fileLength > 9) {
           alert(`最多選擇 9 張照片，目前已選 ${fileLength} 張，請重新選擇！`);
           selectFile.value = "";
           return false;
+        }
+
+        // 監聽總數
+        const picContentLen =
+          document.querySelectorAll(".picContent li").length;
+        console.log("picContentLen", picContentLen);
+        console.log("總數", fileLength + picContentLen);
+        const total = fileLength + picContentLen;
+        if (total > 9) {
+          alert(`目前已選 ${fileLength} 張，總數僅能 9 張照片`);
+          selectFile.value = "";
+          return false;
+        } else if (total == 9) {
+          selectFile.disabled = true;
         }
 
         let obj = this,
@@ -149,16 +173,29 @@
         }
       });
 
+      const picContentLen = document.querySelectorAll(".picContent li").length;
+      console.log("picContentLen", picContentLen);
+
       // 刪除圖片
       function removeItem(delNode) {
         let itemNode = delNode.parentNode,
           title = delNode.getAttribute("title");
         let flag = confirm(`確認要刪除：${title} 圖片？`);
+
         if (flag) {
           itemNode.parentNode.removeChild(itemNode);
           console.log("刪除成功");
+
+          if (picContentLen < 9) {
+            selectFile.disabled = false;
+          }
         }
         return false;
+      }
+
+      // 監聽畫面載入後讀取 li 長度，如果大於 9，input 灰底
+      if (picContentLen == 9) {
+        selectFile.disabled = true;
       }
     </script>
   </body>

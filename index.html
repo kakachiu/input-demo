@@ -34,7 +34,7 @@
       selectFile.addEventListener("change", function () {
         // 由於還要加拍照的，所以可以監聽長度如果大於9張就把選擇檔案按鈕灰底
         // 限制選擇張數
-        var fileLength = document.querySelector("selectFile").files.length;
+        var fileLength = document.querySelector(".selectFile").files.length;
         console.log(fileLength);
         if (fileLength > 9) {
           alert(
@@ -62,14 +62,14 @@
             console.log("讀取異常");
           };
 
-          // iffi语法
+          // IIFE 语法
           (function (i) {
-            //讀取成功
+            // 讀取成功
             reader.onload = function (e) {
               // console.log(e)
               var _src = e.target.result;
 
-              //節點
+              // 節點
               var divItem = document.createElement("div");
               divItem.setAttribute("class", "item");
               var divPic = document.createElement("div");
